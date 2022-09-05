@@ -7,7 +7,6 @@ import android.util.Log
 import android.widget.Toast
 import com.example.summerwave.databinding.ActivitySignupBinding
 import com.example.summerwave.network.RequestToServer
-import com.example.summerwave.network.data.request.AnyData
 import com.example.summerwave.network.data.request.RequestSignupData
 import com.example.summerwave.network.data.response.ResponseSignupData
 import retrofit2.Call
@@ -36,10 +35,12 @@ class SignupActivity : AppCompatActivity() {
                 // 회원가입 요청
                 requestToServer.service.requestSignup(
                     RequestSignupData(
-                        userObj = AnyData(
-                            binding.etEmail.text.toString(),
-                            "summer_wave",
-                            binding.etPassword.text.toString())
+                        login_type = "summer_wave",
+                        email = binding.etEmail.text.toString(),
+                        password = binding.etPassword.text.toString(),
+                        nickname = "뿌끼리",
+                        is_agree_optional_term = 1,
+                        profile_image_url = "https://devlog.june.gd/_next/image?url=%2Fimages%2Fcoding_cat.gif&w=256&q=75"
                     )
                 ).enqueue(object : Callback<ResponseSignupData> {
                     override fun onResponse(
@@ -58,7 +59,9 @@ class SignupActivity : AppCompatActivity() {
                         } else {
                             Toast.makeText(this@SignupActivity, "회원가입 실패", Toast.LENGTH_SHORT)
                                 .show()
+                            Log.d("회원가입 통신 실패", response.code().toString())
                             when (response.code()) {
+                                400 -> Log.d("400 실패", response.message())
                                 404 -> Log.d("실패", response.message())
                             }
                         }

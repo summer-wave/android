@@ -4,16 +4,10 @@ data class ResponseSignupData(
     val status: Boolean,
     val code: Int,
     val message: String?,
-    val data: SomeData?
+    val data: JwtData?
 )
 
-data class SomeData(
-    val status: Boolean,
-    val code: Int,
-    val message: String?,
-    val data: UserId?
+data class JwtData(
+    val jwt: String?
 )
 
-data class UserId(
-    val user_id: Int
-)
